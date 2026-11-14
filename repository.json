@@ -1,5 +1,5 @@
 {
-  "name": "Wyze Bridge Add-ons",
-  "url": "https://github.com/IDisposable/docker-wyze-bridge",
-  "maintainer": "Marc Brooks (@IDisposable)"
+  "name": "Wyze Bridge doorbell test (baobab67 fork)",
+  "url": "https://github.com/baobab67/docker-wyze-bridge",
+  "maintainer": "baobab67"
 }

@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.7.0-wyzedb3.1
+
+Test build, not an upstream release. IDisposable's 4.7.0 with go2rtc
+built from baobab67/go2rtc branch `wyzedb3`: v1.9.14 plus
+AlexxIT/go2rtc PR #2643 (Wyze Video Doorbell v1, WYZEDB3 4.25.1.333).
+Separate slug and alternate host ports (15080, 11984, 18554, 18888,
+18889, 18189/udp) so it runs beside the stable app. amd64 only.
+
 ## 4.7.0
 
 Cameras that moved on the LAN, a WebUI that tells the truth about

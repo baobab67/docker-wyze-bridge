@@ -1,27 +1,17 @@
-# ── Stage 1: Fetch go2rtc binary + video-rtc.js ─────────────────────────────
-FROM alpine:3.21 AS go2rtc-fetch
+# ── Stage 1: Build go2rtc from Roy's fork + take its video-rtc.js ──────────
+# wyzedb3 build: go2rtc v1.9.14 plus AlexxIT/go2rtc PR #2643 (Wyze Video
+# Doorbell v1 / WYZEDB3: AES-128-CBC PSK DTLS suite + 48-byte FRAMEINFO
+# marker), built from source instead of downloading the release binary.
+# GO2RTC_VERSION is kept for cycle.sh / version-check; it is the base tag.
+FROM golang:1.26.4-alpine AS go2rtc-fetch
 ARG GO2RTC_VERSION=1.9.14
-ARG TARGETARCH
-# BuildKit sets TARGETARCH; the legacy builder and some GUI builds
-# (Portainer, NAS apps) don't, so fall back to the arch we're running on.
-RUN apk add --no-cache curl ca-certificates && \
-    ARCH=${TARGETARCH}; \
-    if [ -z "$ARCH" ]; then \
-      case "$(uname -m)" in \
-        x86_64) ARCH=amd64 ;; \
-        aarch64) ARCH=arm64 ;; \
-        armv7l|armv6l) ARCH=arm ;; \
-        *) ARCH="$(uname -m)" ;; \
-      esac; \
-    fi; \
-    if [ "$ARCH" = "arm" ]; then ARCH="arm"; fi; \
-    curl -fsSL \
-      "https://github.com/AlexxIT/go2rtc/releases/download/v${GO2RTC_VERSION}/go2rtc_linux_${ARCH}" \
-      -o /go2rtc && \
-    chmod +x /go2rtc && \
-    curl -fsSL \
-      "https://github.com/AlexxIT/go2rtc/raw/v${GO2RTC_VERSION}/www/video-rtc.js" \
-      -o /video-rtc.js
+ARG GO2RTC_REPO=https://github.com/baobab67/go2rtc.git
+ARG GO2RTC_REF=7eb5c27811af6591293fa0ae46e51d12c4e8556e
+RUN apk add --no-cache git ca-certificates && \
+    git clone --filter=blob:none "${GO2RTC_REPO}" /go2rtc-src && \
+    cd /go2rtc-src && git checkout --detach "${GO2RTC_REF}" && \
+    CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags "-s -w" -o /go2rtc . && \
+    cp www/video-rtc.js /video-rtc.js
 
 # ── Stage 2: Build Go binary ──────────────────────────────────────────────────
 FROM golang:1.26.4-alpine AS builder
