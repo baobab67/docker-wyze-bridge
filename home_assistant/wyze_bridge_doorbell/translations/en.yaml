@@ -107,6 +107,9 @@ configuration:
   snapshot.keep:
     name: Keep Duration
     description: Auto-delete snapshots older than this (e.g. 72h, 7d; 0 = keep forever)
+  snapshot.rotate:
+    name: Rotate Snapshots
+    description: "Turn snapshots (the Home Assistant camera image) per camera, e.g. front_doorbell:90. Format cam:deg,cam:deg with 90, 180 or 270."
   snapshot.cameras:
     name: Cameras
     description: Camera names to snapshot (one per entry; empty list = all cameras)

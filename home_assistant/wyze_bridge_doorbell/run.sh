@@ -98,6 +98,7 @@ export_opt 'snapshot.file_name' SNAPSHOT_FILE_NAME
 export_opt 'snapshot.interval'  SNAPSHOT_INTERVAL
 export_opt 'snapshot.keep'      SNAPSHOT_KEEP
 export_array '.snapshot.cameras' SNAPSHOT_CAMERAS
+export_opt 'snapshot.rotate'    SNAPSHOT_ROTATE
 
 # ── Location (sunrise/sunset snapshots) ─────────────────────────────────────
 export_opt 'location.latitude'  LATITUDE

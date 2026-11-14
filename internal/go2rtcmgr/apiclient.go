@@ -346,6 +346,9 @@ func (c *APIClient) HasActiveProducer(ctx context.Context, name string) (bool, e
 // GetSnapshot retrieves a JPEG snapshot from a stream.
 func (c *APIClient) GetSnapshot(ctx context.Context, name string) ([]byte, error) {
 	u := fmt.Sprintf("%s/api/frame.jpeg?src=%s", c.baseURL, url.QueryEscape(name))
+	if deg := SnapshotRotation(name); deg != 0 {
+		u += fmt.Sprintf("&rotate=%d", deg)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", u, nil)
 	if err != nil {

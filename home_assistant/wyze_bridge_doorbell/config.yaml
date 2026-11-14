@@ -6,7 +6,7 @@ description: >-
 slug: wyze_bridge_doorbell
 url: https://github.com/baobab67/docker-wyze-bridge/tree/wyzedb3
 image: ghcr.io/baobab67/docker-wyze-bridge-doorbell-homeassistant
-version: 4.7.0-wyzedb3.2
+version: 4.7.0-wyzedb3.3
 stage: experimental
 arch:
   - amd64
@@ -98,6 +98,7 @@ schema:
     file_name: str?
     interval: int?
     keep: 'match(^\d+[smhd]?$)?'
+    rotate: str?
     cameras:
       - str?
   record:
