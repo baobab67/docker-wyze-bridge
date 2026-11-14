@@ -70,6 +70,14 @@ export_opt 'mqtt.username'        MQTT_USERNAME
 export_opt 'mqtt.password'        MQTT_PASSWORD
 export_opt 'mqtt.topic'           MQTT_TOPIC
 export_opt 'mqtt.discovery_topic' MQTT_DISCOVERY_TOPIC
+# mqtt.enabled: false must win over Mosquitto auto-detect: the Go config
+# turns MQTT back on whenever MQTT_HOST is set. Two bridges on the same
+# broker share the client ID "wyze-bridge" and kick each other off.
+if [ "$(jq -r '.mqtt.enabled | tostring' /data/options.json)" = "false" ]; then
+    bashio::log.info "MQTT off (mqtt.enabled: false)"
+    unset MQTT_HOST MQTT_PORT MQTT_USERNAME MQTT_PASSWORD
+    export MQTT_ENABLED=false
+fi
 
 # ── Filter ──────────────────────────────────────────────────────────────────
 export_array '.filter.names'  FILTER_NAMES

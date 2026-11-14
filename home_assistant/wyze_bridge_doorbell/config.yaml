@@ -6,7 +6,7 @@ description: >-
 slug: wyze_bridge_doorbell
 url: https://github.com/baobab67/docker-wyze-bridge/tree/wyzedb3
 image: ghcr.io/baobab67/docker-wyze-bridge-doorbell-homeassistant
-version: 4.7.0-wyzedb3.1
+version: 4.7.0-wyzedb3.2
 stage: experimental
 arch:
   - amd64
@@ -14,21 +14,21 @@ startup: application
 boot: manual
 init: false
 hassio_api: true
-# Not host networking: the stable app already holds 5080/1984/8554/
-# 8888/8889/8189 on the host. Inside the container the bridge keeps its
-# usual ports; Docker maps them to the alternate host ports below.
-host_network: false
+# Host networking, like the stable app: TUTK LAN discovery timed out
+# behind Docker NAT. The bridge's ports are fixed (5080/1984/8554/...),
+# so stop the stable Wyze Bridge app before starting this one.
+host_network: true
 ingress: true
 ingress_port: 5080
 panel_icon: mdi:doorbell-video
 watchdog: http://[HOST]:[PORT:5080]/api/health
 ports:
-  5080/tcp: 15080
-  1984/tcp: 11984
-  8554/tcp: 18554
-  8888/tcp: 18888
-  8889/tcp: 18889
-  8189/udp: 18189
+  5080/tcp: 5080
+  1984/tcp: 1984
+  8554/tcp: 8554
+  8888/tcp: 8888
+  8889/tcp: 8889
+  8189/udp: 8189
 ports_description:
   5080/tcp: Bridge WebUI
   1984/tcp: go2rtc native UI (optional)
